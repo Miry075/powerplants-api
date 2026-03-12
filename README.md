@@ -9,6 +9,7 @@ A .NET REST API that solves the **unit-commitment problem**: given a target load
 - [API Reference](#api-reference)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
+  - [Launch the solution](#launch-the-solution)
   - [Run locally](#run-locally)
   - [Run with Docker](#run-with-docker)
 - [Project Structure](#project-structure)
@@ -126,6 +127,27 @@ Tests       →  Unit tests
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
 - (Optional) [Docker](https://www.docker.com/)
 
+### Launch the solution
+
+#### From an IDE (Visual Studio / Rider)
+
+1. Open `PowerPlants.sln`.
+2. Set `Powerplants.Challenge.Api` as startup project.
+3. Run with profile:
+  - `http` → `http://localhost:5071`
+  - `https` → `https://localhost:7136` (also serves `http://localhost:5071`)
+
+#### From terminal
+
+```bash
+# From repository root
+dotnet restore PowerPlants.sln
+dotnet build PowerPlants.sln
+dotnet run --project Powerplants.Challenge.Api --launch-profile http
+```
+
+API URL: `http://localhost:5071`
+
 ### Run locally
 
 ```bash
@@ -138,7 +160,7 @@ dotnet restore
 dotnet run --project Powerplants.Challenge.Api
 ```
 
-The API will be available at `http://localhost:5000` (or the port shown in the console).
+The API will be available at `http://localhost:5071` (HTTP profile) or `https://localhost:7136` (HTTPS profile).
 
 You can test it directly with the included HTTP file:
 ```
