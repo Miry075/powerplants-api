@@ -20,6 +20,7 @@ A .NET REST API that solves the **unit-commitment problem**: given a target load
 ## Overview
 
 The API accepts a production plan request containing:
+
 - A **load** (MWh) that must be met.
 - **Fuel prices** (gas, kerosine, CO₂, wind availability).
 - A list of **power plants** (gas-fired, turbojet, wind turbine).
@@ -28,11 +29,11 @@ It returns the optimal allocation of production across plants by ordering them b
 
 ### Supported plant types
 
-| Type | Fuel | Marginal cost formula |
-|---|---|---|
-| `gasfired` | Gas | `gas_price / efficiency` |
-| `turbojet` | Kerosine | `kerosine_price / efficiency` |
-| `windturbine` | Wind | `0` (free) — effective PMax = `pmax × wind%` |
+| Type          | Fuel     | Marginal cost formula                        |
+| ------------- | -------- | -------------------------------------------- |
+| `gasfired`    | Gas      | `gas_price / efficiency`                     |
+| `turbojet`    | Kerosine | `kerosine_price / efficiency`                |
+| `windturbine` | Wind     | `0` (free) — effective PMax = `pmax × wind%` |
 
 ---
 
@@ -106,17 +107,17 @@ Tests       →  Unit tests
 
 ```json
 [
-  { "name": "windpark1",    "p": 90.0  },
+  { "name": "windpark1", "p": 90.0 },
   { "name": "gasfiredbig1", "p": 390.0 }
 ]
 ```
 
 **Error responses**
 
-| Status | Cause |
-|---|---|
-| `400 Bad Request` | Request body is null or contains invalid data |
-| `500 Internal Server Error` | Unknown plant type or unexpected error |
+| Status                      | Cause                                         |
+| --------------------------- | --------------------------------------------- |
+| `400 Bad Request`           | Request body is null or contains invalid data |
+| `500 Internal Server Error` | Unknown plant type or unexpected error        |
 
 ---
 
@@ -134,8 +135,9 @@ Tests       →  Unit tests
 1. Open `PowerPlants.sln`.
 2. Set `Powerplants.Challenge.Api` as startup project.
 3. Run with profile:
-  - `http` → `http://localhost:5071`
-  - `https` → `https://localhost:7136` (also serves `http://localhost:5071`)
+
+- `http` → `http://localhost:5071`
+- `https` → `https://localhost:7136` (also serves `http://localhost:5071`)
 
 #### From terminal
 
@@ -163,6 +165,7 @@ dotnet run --project Powerplants.Challenge.Api
 The API will be available at `http://localhost:5071` (HTTP profile) or `https://localhost:7136` (HTTPS profile).
 
 You can test it directly with the included HTTP file:
+
 ```
 Powerplants.Challenge.Api/Powerplants.Challenge.Api.http
 ```
@@ -174,10 +177,10 @@ Powerplants.Challenge.Api/Powerplants.Challenge.Api.http
 docker build -t powerplants-challenge .
 
 # Run the container
-docker run -p 8080:8080 powerplants-challenge
+docker run -p 8888:8888 powerplants-challenge
 ```
 
-The API will be available at `http://localhost:8080`.
+The API will be available at `http://localhost:8888`.
 
 ---
 
