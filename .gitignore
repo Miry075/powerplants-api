@@ -1,0 +1,24 @@
+bin/
+obj/
+.vs/
+.vscode/
+
+# Rider / IntelliJ
+.idea/
+
+# User-specific files
+*.user
+*.suo
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
+
+# Test results
+TestResults/
+
+# NuGet
+*.nupkg
+packages/
