@@ -51,4 +51,27 @@ public class ProductionHelperShould
         Assert.Equal(100, result[0].production);
         Assert.Equal(50, result[1].production);
     }
+
+    [Fact]
+    public void DispatchProductionMethod_RebalancesAcrossMultiplePlants_WhenShortfallBelowPmin()
+    {
+        var plants = new[]
+        {
+            new Powerplant { Name = "p1", Type = "gasfired", Efficiency = 1, PMax = 100, PMin = 0 },
+            new Powerplant { Name = "p2", Type = "gasfired", Efficiency = 1, PMax = 100, PMin = 60 },
+            new Powerplant { Name = "p3", Type = "gasfired", Efficiency = 1, PMax = 100, PMin = 60 },
+        };
+
+        var load = 130;
+        var result = ProductionHelper.DispatchProductionMethod(load, plants, new FuelsInfo(13.4, 50.8, 20, 0), NullLogger.Instance).ToList();
+
+        Assert.Equal(3, result.Count);
+        Assert.Equal("p1", result[0].powerplantName);
+        Assert.Equal(70, result[0].production);
+        Assert.Equal("p2", result[1].powerplantName);
+        Assert.Equal(60, result[1].production);
+        Assert.Equal("p3", result[2].powerplantName);
+        Assert.Equal(0, result[2].production);
+        Assert.Equal(130, result.Sum(x => x.production));
+    }
 }

@@ -80,10 +80,10 @@ public class DispatchServiceShould
         Assert.Equal(0, result[1].production);
 
         Assert.Equal("gasfiredbig1", result[2].powerplantName);
-        Assert.Equal(460, result[2].production);
+        Assert.Equal(380, result[2].production);
 
         Assert.Equal("gasfiredbig2", result[3].powerplantName);
-        Assert.Equal(20, result[3].production);
+        Assert.Equal(100, result[3].production);
 
         Assert.Equal("gasfiredsomewhatsmaller", result[4].powerplantName);
         Assert.Equal(0, result[4].production);
