@@ -79,7 +79,7 @@ public static class ProductionHelper
 
     private static double GetEffectivePMin(Powerplant powerplant)
     {
-        return powerplant.Type == "windturbine" ? 0 : powerplant.PMin;
+        return powerplant.PMin;
     }
 
     private static double GetEffectivePMax(Powerplant powerplant, FuelsInfo fuelsInfo)
