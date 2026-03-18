@@ -23,7 +23,7 @@ public class DispatchService : IDispatchService
             productionPlanRequest.Load, productionPlanRequest.Powerplants.Count);
             var meritOrderedPowerplants = productionPlanRequest
                 .Powerplants
-                .OrderBy(x => CostHelper.ComputeMarginalCost(x, productionPlanRequest.Fuels));
+                .OrderBy(x => x.ComputeMarginalCost(productionPlanRequest.Fuels));
             return ProductionHelper.DispatchProductionMethod(productionPlanRequest.Load,
                 meritOrderedPowerplants,
                 productionPlanRequest.Fuels,

@@ -1,6 +1,7 @@
 using System.Linq;
 using Microsoft.Extensions.Logging.Abstractions;
 using Powerplants.Challenge.Api.Services;
+using Powerplants.Challenge.Domain.Enums;
 using Powerplants.Challenge.Domain.Models;
 using Xunit;
 
@@ -16,12 +17,12 @@ public class DispatchServiceShould
             new FuelsInfo(13.4, 50.8, 20, 60),
             new()
             {
-                new Powerplant { Name = "gasfiredbig1", Type = "gasfired", Efficiency = 0.53, PMin = 100, PMax = 460 },
-                new Powerplant { Name = "gasfiredbig2", Type = "gasfired", Efficiency = 0.53, PMin = 100, PMax = 460 },
-                new Powerplant { Name = "gasfiredsomewhatsmaller", Type = "gasfired", Efficiency = 0.37, PMin = 40, PMax = 210 },
-                new Powerplant { Name = "tj1", Type = "turbojet", Efficiency = 0.3, PMin = 0, PMax = 16 },
-                new Powerplant { Name = "windpark1", Type = "windturbine", Efficiency = 1, PMin = 0, PMax = 150 },
-                new Powerplant { Name = "windpark2", Type = "windturbine", Efficiency = 1, PMin = 0, PMax = 36 },
+                new Powerplant { Name = "gasfiredbig1", Type = PowerplantType.GasFired, Efficiency = 0.53, PMin = 100, PMax = 460 },
+                new Powerplant { Name = "gasfiredbig2", Type = PowerplantType.GasFired, Efficiency = 0.53, PMin = 100, PMax = 460 },
+                new Powerplant { Name = "gasfiredsomewhatsmaller", Type = PowerplantType.GasFired, Efficiency = 0.37, PMin = 40, PMax = 210 },
+                new Powerplant { Name = "tj1", Type = PowerplantType.TurboJet, Efficiency = 0.3, PMin = 0, PMax = 16 },
+                new Powerplant { Name = "windpark1", Type = PowerplantType.WindTurbine, Efficiency = 1, PMin = 0, PMax = 150 },
+                new Powerplant { Name = "windpark2", Type = PowerplantType.WindTurbine, Efficiency = 1, PMin = 0, PMax = 36 },
             });
 
         var service = new DispatchService(NullLogger<DispatchService>.Instance);
@@ -59,12 +60,12 @@ public class DispatchServiceShould
             new FuelsInfo(13.4, 50.8, 20, 0),
             new()
             {
-                new Powerplant { Name = "gasfiredbig1", Type = "gasfired", Efficiency = 0.53, PMin = 100, PMax = 460 },
-                new Powerplant { Name = "gasfiredbig2", Type = "gasfired", Efficiency = 0.53, PMin = 100, PMax = 460 },
-                new Powerplant { Name = "gasfiredsomewhatsmaller", Type = "gasfired", Efficiency = 0.37, PMin = 40, PMax = 210 },
-                new Powerplant { Name = "tj1", Type = "turbojet", Efficiency = 0.3, PMin = 0, PMax = 16 },
-                new Powerplant { Name = "windpark1", Type = "windturbine", Efficiency = 1, PMin = 0, PMax = 150 },
-                new Powerplant { Name = "windpark2", Type = "windturbine", Efficiency = 1, PMin = 0, PMax = 36 },
+                new Powerplant { Name = "gasfiredbig1", Type = PowerplantType.GasFired, Efficiency = 0.53, PMin = 100, PMax = 460 },
+                new Powerplant { Name = "gasfiredbig2", Type = PowerplantType.GasFired, Efficiency = 0.53, PMin = 100, PMax = 460 },
+                new Powerplant { Name = "gasfiredsomewhatsmaller", Type = PowerplantType.GasFired, Efficiency = 0.37, PMin = 40, PMax = 210 },
+                new Powerplant { Name = "tj1", Type = PowerplantType.TurboJet, Efficiency = 0.3, PMin = 0, PMax = 16 },
+                new Powerplant { Name = "windpark1", Type = PowerplantType.WindTurbine, Efficiency = 1, PMin = 0, PMax = 150 },
+                new Powerplant { Name = "windpark2", Type = PowerplantType.WindTurbine, Efficiency = 1, PMin = 0, PMax = 36 },
             });
 
         var service = new DispatchService(NullLogger<DispatchService>.Instance);
@@ -102,12 +103,12 @@ public class DispatchServiceShould
             new FuelsInfo(13.4, 50.8, 20, 60),
             new()
             {
-                new Powerplant { Name = "gasfiredbig1", Type = "gasfired", Efficiency = 0.53, PMin = 100, PMax = 460 },
-                new Powerplant { Name = "gasfiredbig2", Type = "gasfired", Efficiency = 0.53, PMin = 100, PMax = 460 },
-                new Powerplant { Name = "gasfiredsomewhatsmaller", Type = "gasfired", Efficiency = 0.37, PMin = 40, PMax = 210 },
-                new Powerplant { Name = "tj1", Type = "turbojet", Efficiency = 0.3, PMin = 0, PMax = 16 },
-                new Powerplant { Name = "windpark1", Type = "windturbine", Efficiency = 1, PMin = 0, PMax = 150 },
-                new Powerplant { Name = "windpark2", Type = "windturbine", Efficiency = 1, PMin = 0, PMax = 36 },
+                new Powerplant { Name = "gasfiredbig1", Type = PowerplantType.GasFired, Efficiency = 0.53, PMin = 100, PMax = 460 },
+                new Powerplant { Name = "gasfiredbig2", Type = PowerplantType.GasFired, Efficiency = 0.53, PMin = 100, PMax = 460 },
+                new Powerplant { Name = "gasfiredsomewhatsmaller", Type = PowerplantType.GasFired, Efficiency = 0.37, PMin = 40, PMax = 210 },
+                new Powerplant { Name = "tj1", Type = PowerplantType.TurboJet, Efficiency = 0.3, PMin = 0, PMax = 16 },
+                new Powerplant { Name = "windpark1", Type = PowerplantType.WindTurbine, Efficiency = 1, PMin = 0, PMax = 150 },
+                new Powerplant { Name = "windpark2", Type = PowerplantType.WindTurbine, Efficiency = 1, PMin = 0, PMax = 36 },
             });
 
         var service = new DispatchService(NullLogger<DispatchService>.Instance);

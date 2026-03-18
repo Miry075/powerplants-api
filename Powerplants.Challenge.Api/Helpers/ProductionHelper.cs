@@ -1,4 +1,5 @@
 ﻿using System;
+using Powerplants.Challenge.Domain.Enums;
 using Powerplants.Challenge.Domain.Models;
 
 namespace Powerplants.Challenge.Api.Helpers;
@@ -84,7 +85,7 @@ public static class ProductionHelper
 
     private static double GetEffectivePMax(Powerplant powerplant, FuelsInfo fuelsInfo)
     {
-        if (powerplant.Type == "windturbine")
+        if (powerplant.Type == PowerplantType.WindTurbine)
         {
             return powerplant.PMax * fuelsInfo.Wind / 100;
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
 using Powerplants.Challenge.Api.Helpers;
+using Powerplants.Challenge.Domain.Enums;
 using Powerplants.Challenge.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,8 @@ public class ProductionHelperShould
     {
         var plants = new[]
         {
-            new Powerplant { Name = "p1", Type = "gasfired", Efficiency = 1, PMax = 100, PMin = 0 },
-            new Powerplant { Name = "p2", Type = "gasfired", Efficiency = 1, PMax = 50, PMin = 0 },
+            new Powerplant { Name = "p1", Type = PowerplantType.GasFired, Efficiency = 1, PMax = 100, PMin = 0 },
+            new Powerplant { Name = "p2", Type = PowerplantType.GasFired, Efficiency = 1, PMax = 50, PMin = 0 },
         };
         var load = 120;
         var result = ProductionHelper.DispatchProductionMethod(load, plants, new FuelsInfo(13.4, 50.8, 20, 0), NullLogger.Instance).ToList();
@@ -29,7 +30,7 @@ public class ProductionHelperShould
     [Fact]
     public void DispatchProductionMethod_LoadLessThanFirstPmax()
     {
-        var plants = new[] { new Powerplant { Name = "p1", Type = "gasfired", Efficiency = 1, PMax = 100, PMin = 0 } };
+        var plants = new[] { new Powerplant { Name = "p1", Type = PowerplantType.GasFired, Efficiency = 1, PMax = 100, PMin = 0 } };
         var load = 30;
         var result = ProductionHelper.DispatchProductionMethod(load, plants, new FuelsInfo(13.4, 50.8, 20, 0), NullLogger.Instance);
         var rp = Assert.Single(result);
@@ -42,8 +43,8 @@ public class ProductionHelperShould
     {
         var plants = new[]
         {
-            new Powerplant { Name = "p1", Type = "gasfired", Efficiency = 1, PMax = 100, PMin = 0 },
-            new Powerplant { Name = "p2", Type = "gasfired", Efficiency = 1, PMax = 50, PMin = 0 }
+            new Powerplant { Name = "p1", Type = PowerplantType.GasFired, Efficiency = 1, PMax = 100, PMin = 0 },
+            new Powerplant { Name = "p2", Type = PowerplantType.GasFired, Efficiency = 1, PMax = 50, PMin = 0 }
         };
         var load = 200;
         var result = ProductionHelper.DispatchProductionMethod(load, plants, new FuelsInfo(13.4, 50.8, 20, 0), NullLogger.Instance).ToList();
@@ -57,9 +58,9 @@ public class ProductionHelperShould
     {
         var plants = new[]
         {
-            new Powerplant { Name = "p1", Type = "gasfired", Efficiency = 1, PMax = 100, PMin = 0 },
-            new Powerplant { Name = "p2", Type = "gasfired", Efficiency = 1, PMax = 100, PMin = 60 },
-            new Powerplant { Name = "p3", Type = "gasfired", Efficiency = 1, PMax = 100, PMin = 60 },
+            new Powerplant { Name = "p1", Type = PowerplantType.GasFired, Efficiency = 1, PMax = 100, PMin = 0 },
+            new Powerplant { Name = "p2", Type = PowerplantType.GasFired, Efficiency = 1, PMax = 100, PMin = 60 },
+            new Powerplant { Name = "p3", Type = PowerplantType.GasFired, Efficiency = 1, PMax = 100, PMin = 60 },
         };
 
         var load = 130;
