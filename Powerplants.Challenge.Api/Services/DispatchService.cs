@@ -1,5 +1,4 @@
 ﻿using System;
-using Powerplants.Challenge.Api.Helpers;
 using Powerplants.Challenge.Application.Services;
 using Powerplants.Challenge.Domain.Models;
 
@@ -9,10 +8,12 @@ namespace Powerplants.Challenge.Api.Services;
 public class DispatchService : IDispatchService
 {
     private readonly ILogger _logger;
+    private readonly IProductionService _productionService;
 
-    public DispatchService(ILogger<DispatchService> logger)
+    public DispatchService(ILogger<DispatchService> logger, IProductionService productionService)
     {
         _logger = logger;
+        _productionService = productionService;
     }
 
     public IEnumerable<PowerplantProduction> DispatchProduction(ProductionPlanRequest productionPlanRequest)
@@ -24,17 +25,15 @@ public class DispatchService : IDispatchService
             var meritOrderedPowerplants = productionPlanRequest
                 .Powerplants
                 .OrderBy(x => x.ComputeMarginalCost(productionPlanRequest.Fuels));
-            return ProductionHelper.DispatchProductionMethod(productionPlanRequest.Load,
+            return _productionService.DispatchProduction(productionPlanRequest.Load,
                 meritOrderedPowerplants,
-                productionPlanRequest.Fuels,
-                _logger);
+                productionPlanRequest.Fuels);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "An error occurred while dispatching production. Message: {Message}", ex.Message);
             throw;
         }
-
     }
 }
 

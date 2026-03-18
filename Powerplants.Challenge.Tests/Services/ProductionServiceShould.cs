@@ -1,60 +1,64 @@
-﻿using Microsoft.Extensions.Logging.Abstractions;
-using Powerplants.Challenge.Api.Helpers;
+using Microsoft.Extensions.Logging.Abstractions;
+using Powerplants.Challenge.Api.Services;
 using Powerplants.Challenge.Domain.Enums;
 using Powerplants.Challenge.Domain.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace Powerplants.Challenge.Helpers.Tests;
+namespace Powerplants.Challenge.Services.Tests;
 
-public class ProductionHelperShould
+public class ProductionServiceShould
 {
+    private readonly ProductionService _service = new(NullLogger<ProductionService>.Instance);
 
     [Fact]
-    public void DispatchProductionMethod_AssignsCorrectlyForExactLoad()
+    public void DispatchProduction_AssignsCorrectlyForExactLoad()
     {
         var plants = new[]
         {
             new Powerplant { Name = "p1", Type = PowerplantType.GasFired, Efficiency = 1, PMax = 100, PMin = 0 },
             new Powerplant { Name = "p2", Type = PowerplantType.GasFired, Efficiency = 1, PMax = 50, PMin = 0 },
         };
-        var load = 120;
-        var result = ProductionHelper.DispatchProductionMethod(load, plants, new FuelsInfo(13.4, 50.8, 20, 0), NullLogger.Instance).ToList();
+
+        var result = _service.DispatchProduction(120, plants, new FuelsInfo(13.4, 50.8, 20, 0)).ToList();
+
         Assert.Equal(2, result.Count);
         Assert.Equal(100, result[0].production);
         Assert.Equal(20, result[1].production);
     }
 
     [Fact]
-    public void DispatchProductionMethod_LoadLessThanFirstPmax()
+    public void DispatchProduction_LoadLessThanFirstPmax()
     {
-        var plants = new[] { new Powerplant { Name = "p1", Type = PowerplantType.GasFired, Efficiency = 1, PMax = 100, PMin = 0 } };
-        var load = 30;
-        var result = ProductionHelper.DispatchProductionMethod(load, plants, new FuelsInfo(13.4, 50.8, 20, 0), NullLogger.Instance);
-        var rp = Assert.Single(result);
+        var plants = new[]
+        {
+            new Powerplant { Name = "p1", Type = PowerplantType.GasFired, Efficiency = 1, PMax = 100, PMin = 0 }
+        };
+
+        var rp = Assert.Single(_service.DispatchProduction(30, plants, new FuelsInfo(13.4, 50.8, 20, 0)));
+
         Assert.Equal("p1", rp.powerplantName);
         Assert.Equal(30, rp.production);
     }
 
     [Fact]
-    public void DispatchProductionMethod_LoadExceedsTotalReturnsAllPmax()
+    public void DispatchProduction_LoadExceedsTotalReturnsAllPmax()
     {
         var plants = new[]
         {
             new Powerplant { Name = "p1", Type = PowerplantType.GasFired, Efficiency = 1, PMax = 100, PMin = 0 },
             new Powerplant { Name = "p2", Type = PowerplantType.GasFired, Efficiency = 1, PMax = 50, PMin = 0 }
         };
-        var load = 200;
-        var result = ProductionHelper.DispatchProductionMethod(load, plants, new FuelsInfo(13.4, 50.8, 20, 0), NullLogger.Instance).ToList();
+
+        var result = _service.DispatchProduction(200, plants, new FuelsInfo(13.4, 50.8, 20, 0)).ToList();
+
         Assert.Equal(2, result.Count);
         Assert.Equal(100, result[0].production);
         Assert.Equal(50, result[1].production);
     }
 
     [Fact]
-    public void DispatchProductionMethod_RebalancesAcrossMultiplePlants_WhenShortfallBelowPmin()
+    public void DispatchProduction_RebalancesAcrossMultiplePlants_WhenShortfallBelowPmin()
     {
         var plants = new[]
         {
@@ -63,8 +67,7 @@ public class ProductionHelperShould
             new Powerplant { Name = "p3", Type = PowerplantType.GasFired, Efficiency = 1, PMax = 100, PMin = 60 },
         };
 
-        var load = 130;
-        var result = ProductionHelper.DispatchProductionMethod(load, plants, new FuelsInfo(13.4, 50.8, 20, 0), NullLogger.Instance).ToList();
+        var result = _service.DispatchProduction(130, plants, new FuelsInfo(13.4, 50.8, 20, 0)).ToList();
 
         Assert.Equal(3, result.Count);
         Assert.Equal("p1", result[0].powerplantName);

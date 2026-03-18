@@ -12,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IDispatchService, DispatchService>();
+builder.Services.AddScoped<IProductionService, ProductionService>();
 
 var app = builder.Build();
 

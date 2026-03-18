@@ -9,6 +9,9 @@ namespace Powerplants.Challenge.Services.Tests;
 
 public class DispatchServiceShould
 {
+    private readonly DispatchService _service =
+        new(NullLogger<DispatchService>.Instance, new ProductionService(NullLogger<ProductionService>.Instance));
+
     [Fact]
     public void DispatchProduction_WithGivenPayload_ReturnExpectedPlan()
     {
@@ -25,9 +28,7 @@ public class DispatchServiceShould
                 new Powerplant { Name = "windpark2", Type = PowerplantType.WindTurbine, Efficiency = 1, PMin = 0, PMax = 36 },
             });
 
-        var service = new DispatchService(NullLogger<DispatchService>.Instance);
-
-        var result = service.DispatchProduction(request).ToList();
+        var result = _service.DispatchProduction(request).ToList();
 
         Assert.Equal(6, result.Count);
 
@@ -68,9 +69,7 @@ public class DispatchServiceShould
                 new Powerplant { Name = "windpark2", Type = PowerplantType.WindTurbine, Efficiency = 1, PMin = 0, PMax = 36 },
             });
 
-        var service = new DispatchService(NullLogger<DispatchService>.Instance);
-
-        var result = service.DispatchProduction(request).ToList();
+        var result = _service.DispatchProduction(request).ToList();
 
         Assert.Equal(6, result.Count);
 
@@ -111,9 +110,7 @@ public class DispatchServiceShould
                 new Powerplant { Name = "windpark2", Type = PowerplantType.WindTurbine, Efficiency = 1, PMin = 0, PMax = 36 },
             });
 
-        var service = new DispatchService(NullLogger<DispatchService>.Instance);
-
-        var result = service.DispatchProduction(request).ToList();
+        var result = _service.DispatchProduction(request).ToList();
 
         Assert.Equal(6, result.Count);
 

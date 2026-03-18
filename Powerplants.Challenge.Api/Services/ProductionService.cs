@@ -1,29 +1,34 @@
-﻿using System;
+using Powerplants.Challenge.Application.Services;
 using Powerplants.Challenge.Domain.Enums;
 using Powerplants.Challenge.Domain.Models;
 
-namespace Powerplants.Challenge.Api.Helpers;
+namespace Powerplants.Challenge.Api.Services;
 
-public static class ProductionHelper
+public class ProductionService : IProductionService
 {
-    public static IEnumerable<PowerplantProduction> DispatchProductionMethod(double load,
+    private readonly ILogger<ProductionService> _logger;
+
+    public ProductionService(ILogger<ProductionService> logger)
+    {
+        _logger = logger;
+    }
+
+    public IEnumerable<PowerplantProduction> DispatchProduction(double load,
         IEnumerable<Powerplant> powerplants,
-        FuelsInfo fuelsInfo,
-        ILogger logger)
+        FuelsInfo fuelsInfo)
     {
         ArgumentNullException.ThrowIfNull(powerplants);
-        ArgumentNullException.ThrowIfNull(logger);
 
         var results = new List<PowerplantProduction>();
         var powerplantsList = powerplants.ToList();
 
-        logger.LogInformation("Dispatch production: get started");
+        _logger.LogInformation("Dispatch production: get started");
         var dispatchState = new List<(Powerplant plant, double production)>();
 
         foreach (var powerplant in powerplantsList)
         {
             var effectivePMax = GetEffectivePMax(powerplant, fuelsInfo);
-            var effectivePMin = GetEffectivePMin(powerplant);
+            var effectivePMin = powerplant.PMin;
             var production = 0d;
 
             if (load <= 0)
@@ -46,13 +51,13 @@ public static class ProductionHelper
             }
 
             dispatchState.Add((powerplant, production));
-            logger.LogInformation("Dispatch production proceeds with: powerplant {PowerplantName}", powerplant.Name);
+            _logger.LogInformation("Dispatch production proceeds with: powerplant {PowerplantName}", powerplant.Name);
         }
 
         foreach (var (plant, production) in dispatchState)
             results.Add(new PowerplantProduction(plant.Name, production));
 
-        logger.LogInformation("Dispatch production returned values");
+        _logger.LogInformation("Dispatch production returned values");
         return results;
     }
 
@@ -63,12 +68,9 @@ public static class ProductionHelper
         for (int i = dispatchState.Count - 1; i >= 0 && remainingShortfall > 0; i--)
         {
             var previous = dispatchState[i];
-            var previousEffectivePMin = GetEffectivePMin(previous.plant);
-            var reducible = Math.Max(0, previous.production - previousEffectivePMin);
+            var reducible = Math.Max(0, previous.production - previous.plant.PMin);
             if (reducible <= 0)
-            {
                 continue;
-            }
 
             var reduction = Math.Min(reducible, remainingShortfall);
             dispatchState[i] = (previous.plant, previous.production - reduction);
@@ -78,20 +80,11 @@ public static class ProductionHelper
         return remainingShortfall <= 0;
     }
 
-    private static double GetEffectivePMin(Powerplant powerplant)
-    {
-        return powerplant.PMin;
-    }
-
     private static double GetEffectivePMax(Powerplant powerplant, FuelsInfo fuelsInfo)
     {
         if (powerplant.Type == PowerplantType.WindTurbine)
-        {
             return powerplant.PMax * fuelsInfo.Wind / 100;
-        }
 
         return powerplant.PMax;
     }
 }
-
-
